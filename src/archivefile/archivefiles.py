@@ -72,7 +72,7 @@ class ArchiveFiles:
         try:
             os.rename(src_file, new_path)
             if self.verbose_flag:
-                print(f"'{src_file}' ==> '{new_path}'")
+                print(f"{src_file} ==> {new_path}")
         except OSError as e:
             self.__log.error("%s: %s", type(e).__name__, e)
             # sys.exit(3)
