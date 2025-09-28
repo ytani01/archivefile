@@ -16,7 +16,10 @@ class ArchiveFiles:
         self.__log = get_logger(__class__.__name__, self.__debug)
         self.__log.debug(
             "srcfiles=%s, stat=%s, dstdir=%s, verbose_flag=%s",
-            srcfiles, stat, dstdir, verbose_flag
+            srcfiles,
+            stat,
+            dstdir,
+            verbose_flag,
         )
 
         self.srcfiles = srcfiles
@@ -53,8 +56,7 @@ class ArchiveFiles:
         base_name = os.path.basename(src_file)
         file_root, file_ext = os.path.splitext(base_name)
         self.__log.debug(
-            "base_name:%a, file_root:%a, file_ext:%a",
-            base_name, file_root, file_ext
+            "base_name:%a, file_root:%a, file_ext:%a", base_name, file_root, file_ext
         )
 
         # タイムスタンプを付加
