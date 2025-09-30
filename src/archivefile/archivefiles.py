@@ -56,7 +56,8 @@ class ArchiveFiles:
         base_name = os.path.basename(src_file)
         file_root, file_ext = os.path.splitext(base_name)
         self.__log.debug(
-            "base_name:%a, file_root:%a, file_ext:%a", base_name, file_root, file_ext
+            "base_name:%a, file_root:%a, file_ext:%a",
+            base_name, file_root, file_ext
         )
 
         # タイムスタンプを付加
