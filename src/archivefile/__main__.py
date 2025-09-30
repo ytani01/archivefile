@@ -50,10 +50,7 @@ def main(ctx, src_files, stat, dstdir, verbose, debug):
     log.debug("command name = %a", ctx.command.name)
     log.debug(
         "src_files=%s, stat = %a, dstdir = %s, verbose=%s",
-        src_files,
-        stat,
-        dstdir,
-        verbose,
+        src_files, stat, dstdir, verbose
     )
 
     if not src_files:
