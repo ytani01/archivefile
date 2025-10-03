@@ -43,3 +43,7 @@ uv run mypy src tests
 [tasks.test]
 description = "test"
 run = "uv run pytest -v tests"
+
+[tasks.install]
+description = "Install"
+run = "uv tool install ."
