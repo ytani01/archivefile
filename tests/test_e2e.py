@@ -39,8 +39,9 @@ def test_archive_single_file_default_options(setup_test_environment):
     command = [
         "archivefile",
         str(src_file_path),
-        "--dstdir", str(archives_dir),
-        "--debug"  # デバッグ出力を有効にする
+        "--dstdir",
+        str(archives_dir),
+        "--debug",  # デバッグ出力を有効にする
     ]
     result = subprocess.run(
         command, capture_output=True, text=True, check=False
@@ -88,9 +89,11 @@ def test_archive_multiple_files_custom_options(tmp_path):
         "archivefile",
         str(src_file_path1),
         str(src_file_path2),
-        "--stat", custom_stat,
-        "--dstdir", str(custom_dstdir),
-        "--debug"
+        "--stat",
+        custom_stat,
+        "--dstdir",
+        str(custom_dstdir),
+        "--debug",
     ]
     result = subprocess.run(
         command, capture_output=True, text=True, check=False

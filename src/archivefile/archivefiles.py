@@ -3,8 +3,9 @@
 #
 import datetime
 import os
+import sys
 
-from pyclickutils import get_logger
+from pyclickutils import errmsg, get_logger
 
 
 class ArchiveFiles:
@@ -34,30 +35,34 @@ class ArchiveFiles:
         # dstdirnoの存在確認
         if not os.path.exists(self.dstdir):
             self.__log.error("directory not found: %s/", self.dstdir)
-            # sys.exit(2)
-            return
+            sys.exit(2)
 
         _results = []
         for _f in self.srcfiles:
             _r = self.archive_one_file(_f)
             _results.append(_r)
 
-    def archive_one_file(self, src_file) -> bool:
+        self.__log.debug("results=%s", _results)
+        if sum(_results) > 0:
+            sys.exit(max(_results))
+
+    def archive_one_file(self, src_file) -> int:
         """Archive one file"""
         self.__log.debug("")
 
         # ファイルの存在確認
         if not os.path.exists(src_file):
             self.__log.error("file not found: %a", src_file)
-            # sys.exit(1)
-            return False
+            return 1
 
         # ファイル名と拡張子を分割
         base_name = os.path.basename(src_file)
         file_root, file_ext = os.path.splitext(base_name)
         self.__log.debug(
             "base_name:%a, file_root:%a, file_ext:%a",
-            base_name, file_root, file_ext
+            base_name,
+            file_root,
+            file_ext,
         )
 
         # タイムスタンプを付加
@@ -74,9 +79,8 @@ class ArchiveFiles:
             os.rename(src_file, new_path)
             if self.verbose_flag:
                 print(f"{src_file} ==> {new_path}")
-        except OSError as e:
-            self.__log.error("%s: %s", type(e).__name__, e)
-            # sys.exit(3)
-            return False
+        except OSError as _e:
+            self.__log.error(errmsg(_e))
+            return 3
 
-        return True
+        return 0
