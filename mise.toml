@@ -1,49 +1,89 @@
-[tasks.upgradesys]
-description = "upgrade global tools"
+[tasks.upgradeapt]
+description = "upgrade apt packages"
 run = '''
-# upgrade global
-echo "# apt"
+echo "# upgrade apt packages"
 LANG=C sudo apt update
 LANG=C sudo apt upgrade
 LANG=C sudo apt autoremove -y
-echo "# mise"
+'''
+alias = "upapt"
+
+[tasks.upgrademise]
+description = "upgrade mise"
+run = '''
+echo "# upgrade mise"
 mise self-update
 mise up
-echo "# uv"
+'''
+alias = "upmise"
+depends = ["upgradeapt"]
+
+[tasks.upgradeuv]
+description = "upgrade uv"
+run = '''
+echo "# upgrade uv"
 uv tool upgrade --all
 '''
-alias = "upsys"
+alias = "upuv"
+depends = ["upgrademise"]
 
 [tasks.upgradelocal]
 description = "upgrade in this project"
 run = '''
 # upgrade this project
+
+echo "# rm -f uv.lock"
+rm -f uv.lock
+echo "# uv sync"
+uv sync
+
 echo "# pip"
 uv pip install -U --group dev -e .
 '''
 alias = "uplocal"
-depends = ["upgradesys"]
+depends = ["upgradeuv"]
 
 [tasks.lint]
 description = "linting"
 run = '''
-# linting
-echo "# isort"
-uv run isort src tests
+# format and linting
+
 echo "# ruff"
-uv run ruff format src tests
+uv run ruff format --line-length 78 src samples tests
+uv run ruff check --fix --extend-select I  src samples tests
+
 echo "# pyright"
-uv run pyright src tests
-echo "# flake8"
-uv run flake8 src tests
+uv run pyright src samples
+
 echo "# mypy"
-uv run mypy src tests
+uv run mypy src samples tests
+
+uv run archivefile -V
 '''
+# depends = ["upgradelocal"]
 
 [tasks.test]
 description = "test"
-run = "uv run pytest -v tests"
+run = '''
+uv run pytest tests
+'''
+depends = ["lint"]
 
-[tasks.install]
-description = "Install"
-run = "uv tool install ."
+[tasks.build]
+description = "build"
+run = '''
+echo "# build"
+rm -rf dist
+uv build
+uv run archivefile -V
+'''
+depends = ["test"]
+
+# [tasks.testpypi]
+# description = "Test PyPI"
+# run = '''
+# pwd
+# . ./.env
+# uv run twine upload --verbose --repository-url https://test.pypi.org/legacy/ dist/* -u __token__ -p ${TESTPYPI_PASSWD}
+# '''
+# depends = ["build"]

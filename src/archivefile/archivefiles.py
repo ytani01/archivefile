@@ -5,7 +5,7 @@ import datetime
 import os
 import sys
 
-from pyclickutils import errmsg, get_logger
+from .mylogger import errmsg, get_logger
 
 
 class ArchiveFiles:

@@ -2,9 +2,10 @@
 # (c) 2025 Yoichi Tanibayashi
 #
 import click
-from pyclickutils import click_common_opts, get_logger
 
 from . import ArchiveFiles, __version__
+from .clickutils import click_common_opts
+from .mylogger import get_logger
 
 
 class HelpOnErrorCommand(click.Command):
