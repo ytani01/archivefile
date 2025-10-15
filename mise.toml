@@ -79,6 +79,14 @@ uv run archivefile -V
 '''
 depends = ["test"]
 
+[tasks.install]
+description = "uv tool install"
+run = '''
+echo "# uv tool install -U ."
+uv tool install -U .
+'''
+depends = ["build"]
+
 # [tasks.testpypi]
 # description = "Test PyPI"
 # run = '''
